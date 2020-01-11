@@ -1,0 +1,2 @@
+module AlbHelper
+end
