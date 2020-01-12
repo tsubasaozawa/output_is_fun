@@ -1,6 +1,6 @@
-resource "aws_security_group" "instance" {
-  name = "instance"
-  description = "instance sg"
+resource "aws_security_group" "fargate" {
+  name = "fargate"
+  description = "fargate sg"
   vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
 
   ingress {

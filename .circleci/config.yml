@@ -6,3 +6,38 @@ jobs:
     steps:
       - checkout
       - run: echo "A first hello"
+  build_image:
+    docker:
+      - image: docker:18.09.0
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: install aws cli
+          command: |
+            apk add --no-cache --update py-pip
+            pip install awscli
+      - run:
+          name: login ecr
+          command: |
+            $(aws ecr get-login --no-include-email --region ap-northeast-1)
+      - run:
+          name: build and push rails image
+          command: |
+            RAILS_TAG=$(echo ${CIRCLE_SHA1})
+            docker build -t ${ECR_DOMAIN}:${RAILS_TAG} -t ${ECR_DOMAIN}:rails-latest .
+            docker push ${ECR_DOMAIN}:${RAILS_TAG}
+            docker push ${ECR_DOMAIN}:rails-latest
+            #  deploy:
+            #    docker:
+            #      - image: circleci/python:3.7
+            #    steps:
+            #      - run:
+            #          name: install aws cli
+            #          command: |
+            #            sudo pip install awscli
+            #      - run:
+            #          name: download jq
+            #          command: |
+            #            wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+            #            mv jq-linux

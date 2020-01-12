@@ -3,7 +3,7 @@ resource "aws_lb" "lb" {
   internal = false
   load_balancer_type = "application"
 
-  security_group = [
+  security_groups = [
     aws_security_group.alb.id,
   ]
 
