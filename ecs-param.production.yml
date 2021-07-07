@@ -1,0 +1,19 @@
+version: 1
+task_definition:
+  ecs_network_mode: awsvpc
+  task_execution_role: arn:aws:iam::486463126616:role/ecs_task_role
+  task_size:
+    cpu_limit: 256 
+    mem_limit: 512
+  service:
+    rails:
+      essential: true
+  run_params:
+    network_configuration:
+      awsvpc_configuration:
+        subnets:
+          - subnet-0c4e23e2cde88450b
+          - subnet-0cefaf3394759c3be
+        security_groups:
+          - sg-0ca2e3b71651e52f6
+        assign_public_ip: ENABLED
